@@ -2,7 +2,12 @@ import Nav from "@/components/nav/Nav";
 import getWashsTypes from "@/requests/getWashsTypes";
 import Head from "next/head";
 import { useMemo } from "react";
-import { useWashsTypesStore } from "../stores/washsTypesStore";
+import { create } from 'zustand';
+
+export const useWashsTypesStore = create((set) => ({
+  washsTypesList: [],
+  setWashsTypesList: (newWashsTypesList) => set((state) => ({ washsTypesList: newWashsTypesList })),
+}));
 
 const Catalog = () => {
   const { washsTypesList, setWashsTypesList } = useWashsTypesStore();
