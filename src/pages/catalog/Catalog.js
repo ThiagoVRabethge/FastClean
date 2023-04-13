@@ -1,7 +1,21 @@
 import Nav from "@/components/nav/Nav";
+import getWashsTypes from "@/requests/getWashsTypes";
 import Head from "next/head";
+import { useMemo } from "react";
+import { useWashsTypesStore } from "../stores/washsTypesStore";
 
 const Catalog = () => {
+  const { washsTypesList, setWashsTypesList } = useWashsTypesStore();
+
+  const GetWashsTypes = () => {
+    getWashsTypes()
+      .then((response) => setWashsTypesList(response.data));
+  };
+
+  useMemo(() => {
+    GetWashsTypes();
+  }, []);
+
   return (
     <>
       <Head>
@@ -15,6 +29,28 @@ const Catalog = () => {
 
       <div className="container">
         <p>Desenvolver página sobre serviços da empresa ficctícia, sugestão: utilizar os cards do bootstrap</p>
+
+        <div className="row">
+          {washsTypesList && washsTypesList.map((washType) => {
+            return (
+              <div key={washType.wash_id} className="col-6">
+                <div className="card">
+                  <div className="card-body">
+                    <span>
+                      <h5 className="card-title">
+                        {washType.name}
+                      </h5>
+                      <p className="card-text">
+                        {washType.description}
+                      </p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
       </div>
     </>
   );
