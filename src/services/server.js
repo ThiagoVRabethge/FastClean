@@ -1,5 +1,7 @@
+import axios from "axios";
+
 const server = axios.create({
-    baseURL: process.env.ROOT_API_URL,
+    baseURL: "https://fast-clean.vercel.app",
 });
 
 export default server;

@@ -2,15 +2,14 @@ import { useMemo } from "react";
 import { useStore } from "../index";
 import Navbar from "@/components/Navbar/Navbar";
 import server from "@/services/server";
+import getWashsTypes from "@/requests/washsTypes/getWashsTypes";
 
 const Catalog = () => {
   const { washsTypesList, setWashsTypesList } = useStore();
 
   const GetWashsTypes = () => {
-    server
-      .get("https://fast-clean-8a0k1tal7-thiagovrabethge.vercel.app/api/listWashsTypes")
-      .then((response) => setWashsTypesList(response.data))
-      .catch((error) => console.error(error))
+    getWashsTypes()
+      .then((response) => setWashsTypesList(response.data));
   };
 
   useMemo(() => {
