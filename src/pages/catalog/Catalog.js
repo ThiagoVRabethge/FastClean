@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { useStore } from "../index";
-import axios from "axios";
 import Navbar from "@/components/Navbar/Navbar";
+import server from "@/services/server";
 
 const Catalog = () => {
   const { washsTypesList, setWashsTypesList } = useStore();
 
   const GetWashsTypes = () => {
-    axios
+    server
       .get("https://fast-clean-8a0k1tal7-thiagovrabethge.vercel.app/api/listWashsTypes")
       .then((response) => setWashsTypesList(response.data))
       .catch((error) => console.error(error))
@@ -20,7 +20,7 @@ const Catalog = () => {
   return (
     <>
       <Navbar />
-      
+
       <div className="container">
         <div className="text-center mt-3 mb-3">
           <h5>Confira nossos serviços</h5>
