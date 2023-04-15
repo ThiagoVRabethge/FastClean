@@ -8,7 +8,7 @@ const Catalog = () => {
 
   const GetWashsTypes = () => {
     axios
-      .get("/api/listWashsTypes")
+      .get("https://fast-clean-8a0k1tal7-thiagovrabethge.vercel.app/api/listWashsTypes")
       .then((response) => setWashsTypesList(response.data))
       .catch((error) => console.error(error))
   };
