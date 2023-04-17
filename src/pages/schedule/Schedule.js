@@ -3,9 +3,15 @@ import getSchedules from "@/requests/schedules/getSchedules";
 import { useStore } from "..";
 import { useMemo } from "react";
 import CreateSchedule from "@/components/modals/CreateSchedule";
+import postSchedule from "@/requests/schedules/postSchedule";
+import moment from "moment";
 
 const Schedule = () => {
   const { schedulesList, setSchedulesList } = useStore();
+  const { selectedSchedule, setSelectedSchedule } = useStore();
+  const actualDate = moment(new Date()).format("DD/MM/YYYY");
+
+  console.info(actualDate);
 
   const GetSchedules = () => {
     getSchedules()
@@ -16,13 +22,23 @@ const Schedule = () => {
     GetSchedules();
   }, []);
 
+  const HandleLoadDataToForm = (schedule) => {
+    setSelectedSchedule(schedule);
+  };
+
   const HandleCreateSchedule = (e) => {
     e.preventDefault();
 
+    let selectedScheduleId = selectedSchedule.schedule_id;
     let clientName = document.querySelector("#clientName").value;
     let carModel = document.querySelector("#carModel").value;
+    let washTypeId = document.querySelector("#washType").value;
 
-    console.log(clientName, carModel);
+    postSchedule(selectedScheduleId, clientName, carModel, washTypeId)
+      .then((response) => {
+        console.info(response);
+        GetSchedules();
+      });
   };
 
   return (
@@ -46,7 +62,7 @@ const Schedule = () => {
             </thead>
             <tbody>
               {schedulesList && schedulesList.map((schedule) => {
-                if (schedule.car_model == null && schedule.wash_type_id == null) {
+                if (schedule.date == actualDate && (schedule.car_model == null && schedule.wash_type_id == null)) {
                   return (
                     <tr key={schedule.schedule_id}>
                       <td>
@@ -61,6 +77,7 @@ const Schedule = () => {
                           class="btn btn-primary btn-sm"
                           data-bs-toggle="modal"
                           data-bs-target="#CreateScheduleModal"
+                          onClick={() => HandleLoadDataToForm(schedule)}
                         >
                           Agendar
                         </button>

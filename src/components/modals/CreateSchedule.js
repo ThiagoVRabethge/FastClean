@@ -1,5 +1,9 @@
+import { useStore } from "@/pages";
+
 const CreateSchedule = (props) => {
   const id = props.id;
+
+  const washsTypesList = useStore((state) => state.washsTypesList);
 
   return (
     <div class="modal fade" id={id} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -17,6 +21,16 @@ const CreateSchedule = (props) => {
 
               <div className="mb-3">
                 <input type="text" id="carModel" placeholder="Modelo do carro" className="form-control" />
+              </div>
+
+              <div className="mb-3">
+                <select id="washType" className="form-control">
+                  {washsTypesList && washsTypesList.map((washs) => (
+                    <option key={washs.wash_id} value={washs.wash_id}>
+                      {washs.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div class="modal-footer">
